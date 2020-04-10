@@ -1,15 +1,25 @@
 @{
     RootModule        = "PSGubbins.psm1"
-    ModuleVersion     = "0.1.0"
     GUID              = "b79c257b-b975-4c42-b354-7c260e34dc26"
+    ModuleVersion     = "0.1.0"
     Author            = "Phil Carney"
     Description       = "A Powershell module of assorted gubbins that doesn't fit anywhere else"
     CompanyName       = "N/A"
     PowerShellVersion = "5.1"
-    FunctionsToExport = @()
+    FunctionsToExport = @(
+        "Get-Cpl"
+        "Get-Msc"
+        "New-Password"
+        "New-RdpSession"
+    )
     CmdletsToExport   = @()
     VariablesToExport = @()
-    AliasesToExport   = @()
+    AliasesToExport   = @(
+        "Get-ControlPanelApplet"
+        "Get-MMCSnapIn"
+        "New-Passphrase"
+        "rdp"
+    )
     PrivateData       = @{
         PSData = @{
             # Tags = @()
