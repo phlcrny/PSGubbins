@@ -32,7 +32,7 @@ Task "Clean" -description "Clean up compiled PSM1, test results etc" -depends "I
     else
     {
         Write-Error -Message "Clean task failed"
-        Break
+        exit 1
     }
 }
 
@@ -56,7 +56,7 @@ Task "Compile" -description "Compiles the PSM1 from source" -action {
     forEach ($File in $FilesToCompile)
     {
         Write-Verbose -Message "Processing '$File'."
-        "`n" | Add-Content -Path $Settings.ModulePSMPath -NoNewline -Encoding "UTF8" # Adds a line-break, but only one.
+        "`n" | Add-Content -Path $Settings.ModulePSMPath -NoNewline -Encoding "UTF8" # Adds a line-exit 1, but only one.
         $ReadFunction = Get-Content -Path $File # Read the function.
         if ($ReadFunction)
         {
@@ -98,7 +98,7 @@ Task "Stage" -description "Stages relevant files in the release folder" -action 
         {
             Write-Error -Message "Stage task failed"
             $Error[0] | Select-Object *
-            Break
+            exit 1
         }
     }
 
@@ -124,7 +124,7 @@ Task "Analyse" -description "Runs PSScriptAnalyzer" -action {
     if (($AnalysisErrors).Count -gt 0)
     {
         Write-Error -Message "The build cannot continue until linting errors are fixed."
-        Break
+        exit 1
     }
     elseif (($AnalysisWarnings).Count -gt 0)
     {
@@ -156,12 +156,12 @@ Task "Pester" -description "Run Pester tests" {
     if ($PesterResults.FailedCount -gt 0)
     {
         Write-Error "$($PesterResults.FailedCount) test(s) failed."
-        Break
+        exit 1
     }
     elseif (($Null -eq $PesterResults) -or ($Null -eq $PesterResults.TotalCount))
     {
         Write-Error "No Pester results returned at all"
-        Break
+        exit 1
     }
     else
     {
