@@ -6,8 +6,5 @@ skip_commits:
 
 build: false
 
-install:
-  - ps: . .\Build\build.ps1 -Bootstrap
-
 test_script:
-  - ps: . .\Build\build.ps1 -Task "Test"
+  - ps: . .\Build\build.ps1 -Task "Test" -Bootstrap
