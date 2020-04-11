@@ -10,6 +10,21 @@ As/when it gets published to the Powershell Gallery, you'll be able to install a
 
 ```Powershell
 Install-Module PSGubbins
+
 Import-Module PSGubbins
+
 Get-Command -Module PSGubbbins
+```
+
+If the Powershell Gallery isn't an option, you can clone or download the source code directly from GitHub, and install manually
+
+```Powershell
+# Clone from GitHub
+git clone https://github.com/phlcrny/PSGubbins.git
+# Change to the root of the project
+cd PSGubbins
+# Copy the built module to the PSModulePath for all users
+Copy-Item PSGubbins "C:\Program Files\WindowsPowerShell\Modules" -Recurse
+# Or for pwsh
+Copy-Item PSGubbins "C:\Program Files\PowerShell\Modules" -Recurse
 ```
