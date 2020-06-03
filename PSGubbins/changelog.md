@@ -7,7 +7,14 @@ and this project (tries to) adhere to [Semantic Versioning](https://semver.org/s
 
 ## [Unreleased]
 
-- ``Update-GitRepo`` - helper function to recursively find and update Git repositories
+- ``Update-GitRepo`` - To recursively find and update Git repositories
+- ``Get-CCMLog``- Updates to support retrieval of all logs.
+
+## [0.2.0] - 03/06/2020
+
+### Added
+
+- ``Get-CCMLog`` - utility to review multiple CCM logs/entries as objects.
 
 ## [0.1.0] - 10/04/2020
 
