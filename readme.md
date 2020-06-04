@@ -4,6 +4,8 @@
 
 A Powershell module of assorted gubbins that didn't really fit anywhere else - an SCCM log parser, passphrase generator, ``mstsc.exe`` wrapper.
 
+As the name suggests, this module is at best a work in progress. Feel free to report issues or suggest improvements.
+
 ## Getting Started
 
 As/when it gets published to the Powershell Gallery, you'll be able to install and get started with the commands below.
