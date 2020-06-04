@@ -71,6 +71,33 @@ InModuleScope -ModuleName "PSGubbins" {
                         $FunctionHelp.returnValues | Should -Not -Match "TBC -"
                     }
                 }
+
+                forEach ($Parameter in $FunctionHelp.parameters.parameter | Where-Object Name -NotMatch "^(Confirm|WhatIf)$")
+                {
+                    Context "Help - Parameter '$($Parameter.Name)'" {
+
+                        It "Has a parameter description" {
+
+                            $Parameter.Description.Text | Should -Not -BeNullOrEmpty
+                            $Parameter.Description.Text | Should -Not -Match "TBC -"
+                        }
+
+                        It "Has a declared type" {
+
+                            $Parameter.Type.Name | Should -Not -BeNullOrEmpty
+                        }
+
+                        # Not sure if I want this yet.
+                        #
+                        # if ($Parameter.required -eq "false")
+                        # {
+                        #     It "Has a default value" {
+                        #
+                        #         $Parameter.defaultValue | Should -Not -BeNullOrEmpty
+                        #     }
+                        # }
+                    }
+                }
             }
         }
     }
