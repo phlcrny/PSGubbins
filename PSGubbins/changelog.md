@@ -10,6 +10,16 @@ and this project (tries to) adhere to [Semantic Versioning](https://semver.org/s
 - ``Update-GitRepo`` - To recursively find and update Git repositories
 - ``Get-CCMLog``- Updates to support retrieval of all logs.
 
+## [0.3.0] - 04/06/2020
+
+### Changed
+
+- ``Get-CCMLog`` - Add ``-Path`` parameter.
+- ``Get-CCMLog`` - Remove ``-Count`` parameter.
+- ``Get-CCMLog`` - Increase lines read from each log file.
+- ``Get-CCMLog`` - Add ``-Name`` parameter alias for ``-LogName``
+- ``Get-CCMLog`` - Replace ``-All`` parameter alias for ``-AllMessages`` with ``-NoPattern``
+
 ## [0.2.0] - 03/06/2020
 
 ### Added
