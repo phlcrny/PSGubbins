@@ -3,7 +3,7 @@
     GUID              = "b79c257b-b975-4c42-b354-7c260e34dc26"
     ModuleVersion     = "0.2.0"
     Author            = "Phil Carney"
-    Description       = "A Powershell module of assorted gubbins that doesn't fit anywhere else"
+    Description       = "A Powershell module of assorted gubbins and utilities that don't fit anywhere else."
     FunctionsToExport = @(
         "Get-Cpl"
         "Get-CCMLog"
