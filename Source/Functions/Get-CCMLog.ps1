@@ -4,13 +4,13 @@ function Get-CCMLog
     .SYNOPSIS
         Retrieves entries from Configuration Manager's logs.
     .DESCRIPTION
-        Retrieves entries from Configuration Manager's log files from a local or remote computer and filters using pre-set patterns.
+        Retrieves entries from Configuration Manager's log files (defaulting to the last 2000 lines per file) from a local or remote computer and filters using pre-set patterns.
     .PARAMETER LogName
-        The name of the log name to be retrieved
+        The name of the log to be retrieved.
+    .PARAMETER Path
+        The directory the logs are stored in. UNC path's are assumed for use against remote machine but conversion from local drives is attempted.
     .PARAMETER ComputerName
         The computer(s) whose logs will queried.
-    .PARAMETER Count
-        The number of lines that will be retrieved from each specified log.
     .PARAMETER AllMessages
         Returns all log entries rather than using the default pattern-matching for filtering.
     .EXAMPLE
@@ -39,6 +39,7 @@ function Get-CCMLog
     param
     (
         [Parameter(Position = 0, HelpMessage = "The log(s) to be retrieved")]
+        [alias("Name")]
         [ValidateSet("AlternateHandler", "AppDiscovery", "AppEnforce", "AppIntentEval", "AssetAdvisor", "CAS", "Ccm32BitLauncher", "CcmCloud",
             "CcmEval", "CcmEvalTask", "CcmExec", "CcmMessaging", "CcmNotificationAgent", "CcmRepair", "CcmRestart", "CCMSDKProvider",
             "CcmSqlCE", "CCMVDIProvider", "CertEnrollAgent", "CertificateMaintenance", "CIAgent", "CIDownloader", "CIStateStore",
@@ -55,27 +56,14 @@ function Get-CCMLog
         [string[]] $LogName = "AppEnforce",
 
         [Parameter(Position = 1, HelpMessage = "The path to the directory containing the logs")]
-        [ValidateScript({ if (Test-Path -Path $_ -PathType "Container")
-            {
-                $True
-            }
-            else
-            {
-                throw "Unable to access/validate specified directory"
-            }
-        })]
         [string] $Path = "C:\Windows\CCM\Logs",
 
-        [Parameter(Position = 2, HelpMessage = "The number of entries/lines to be returned.")]
-        [ValidateNotNullOrEmpty()]
-        [int] $Count = 20,
-
-        [Parameter(Position = 3, ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, HelpMessage = "The computer whose logs will be parsed.")]
+        [Parameter(Position = 3, ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, HelpMessage = "The computer whose logs will be parsed")]
         [alias("PSComputerName", "__SERVER", "CN", "IPAddress")]
         [string[]] $ComputerName = "localhost",
 
-        [Parameter(HelpMessage = "Specifies that all messages should be returned")]
-        [alias("All")]
+        [Parameter(HelpMessage = "Returns all log entries rather than using the default pattern-matching for filtering")]
+        [alias("NoPattern")]
         [switch] $AllMessages
     )
 
@@ -136,38 +124,77 @@ function Get-CCMLog
     {
         forEach ($Computer in $ComputerName)
         {
+            if (($Computer -like "localhost") -or ($Computer -like "127.0.0.1"))
+            {
+                Write-Verbose -Message "Converting localhost to hostname"
+                $Computer = [Environment]::MachineName
+            }
+            Write-Verbose -Message "Processing '$Computer'"
+
+            try
+            {
+                $LogRoot = $Null
+                if ($Null -ne $Path)
+                {
+                    $JoinSplat = @{
+                        Path        = "\\$Computer\"
+                        ChildPath   = ($Path -replace ":", "$")
+                        ErrorAction = "Stop"
+                    }
+
+                    $UNCPath = Join-Path @JoinSplat
+                    if (Test-Path -Path $UNCPath -ErrorAction "Stop")
+                    {
+                        $LogRoot = Resolve-Path -Path $UNCPath -ErrorAction "Stop"
+                    }
+                }
+                else
+                {
+                    $LogRoot = Resolve-Path "\\$Computer\C$\Windows\CCM\Logs\" -ErrorAction "Stop"
+                }
+
+                if ($LogRoot -match "^Microsoft.Powershell")
+                {
+                    $LogRoot = $LogRoot -Split "::" | Select-Object -Last 1
+                }
+            }
+            catch
+            {
+                Write-Warning -Message "Problems were encountered resolving '$LogRoot'"
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+
+            if (-not (Test-Path -Path $LogRoot))
+            {
+                Write-Warning -Message "Unable to resolve/access '$LogRoot'"
+                Continue
+            }
+
             Write-Verbose -Message "Testing for connectivity to '$Computer'"
-            if (($Computer -like "localhost") -or
-                ($Computer -like "127.0.0.1") -or
-                ($Computer -like [Environment]::MachineName) -or
+            if (($Computer -eq [Environment]::MachineName) -or
                 (Test-Connection -ComputerName $Computer -Quiet -Count 2))
             {
                 forEach ($Log in $LogName)
                 {
-                    if ($PSCmdlet.ShouldProcess($Computer, "Retrieve $Log log entries"))
+                    if ($PSCmdlet.ShouldProcess($LogRoot, "Retrieve '$Log' log entries"))
                     {
-                        if (($Computer -like "localhost") -or ($Computer -like "127.0.0.1"))
-                        {
-                            Write-Verbose -Message "Converting '$Computer' to '$([Environment]::MachineName)'"
-                            $Computer = [Environment]::MachineName
-                        }
-                        Write-Verbose -Message "Processing '$Computer'"
-
                         try
                         {
-                            $LogRoot = $Null
-                            $LogRoot = Resolve-Path "\\$Computer\C$\Windows\CCM\Logs\" -ErrorAction "Stop"
-                            $LogPaths = $Null
-                            Write-Verbose -Message "Locating $Log log(s)."
+                            Write-Verbose -Message "Locating '$Log' log(s)."
+                            $LogSearchSplat = $Null
                             $LogSearchSplat = @{
-                                Path = $LogRoot
+                                Path   = $LogRoot
                                 Filter = "$Log*.log"
-                                File = $True
+                                File   = $True
                             }
-                            $LogPaths = Get-ChildItem @LogSearchSplat  | Select-Object -ExpandProperty "FullName"
+
+                            $LogPaths = $Null
+                            $LogPaths = @(Get-ChildItem @LogSearchSplat  | Select-Object -ExpandProperty "FullName")
+                            Write-Verbose -Message "'$($LogPaths.Count)' '$Log' logs found."
                         }
                         catch
                         {
+                            Write-Warning -Message "Problems were encountered '$Log' logs from '$LogRoot'"
                             $PSCmdlet.ThrowTerminatingError($_)
                         }
 
@@ -177,17 +204,15 @@ function Get-CCMLog
                             {
                                 try
                                 {
-                                    Write-Verbose -Message "Defining parameters for log read."
                                     $Parameters = @{
                                         Path        = $LogPath
-                                        Tail        = 1000
+                                        Tail        = 2000     # I'm reluctant to read the entirety of the files by default and this seems likely to read most logs.
                                         ErrorAction = "Stop"
                                     }
 
                                     Write-Verbose -Message "Reading log ($LogPath)."
                                     $LogContents = Get-Content @Parameters |
-                                        Where-Object { $_ -match $Pattern } |
-                                        Select-Object -Last $Count
+                                        Where-Object { $_ -match $Pattern }
                                 }
                                 catch [System.UnauthorizedAccessException]
                                 {
@@ -209,7 +234,7 @@ function Get-CCMLog
                                         # Identifies the message sections of each line using the [LOG[] tags and removes them for us.
                                         if ($Log -like "AppIntentEval")
                                         {
-                                            Write-Verbose -Message "Parsing AppIntentEval message."
+                                            Write-Debug -Message "Parsing AppIntentEval message."
                                             $Message = $Message -replace ":- |, ", "`n"
                                             # Lazy reformatting to key:value statements instead of in a line.
                                         }
@@ -222,7 +247,7 @@ function Get-CCMLog
 
                                     if (-not ($Message))
                                     {
-                                        Write-Verbose -Message "Unable to read message - skipping to next."
+                                        Write-Verbose -Message "Unable to read blank message - skipping to next."
                                         Continue
                                     }
 
