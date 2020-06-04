@@ -37,12 +37,10 @@ InModuleScope -ModuleName "PSGubbins" {
             $ModuleManifest.RequiredModules | Should -BeNullOrEmpty
         }
 
-        It "Has a company name of 'N/A'" {
+        It "Has no company name" {
 
-            $ModuleManifest.CompanyName | Should -Not -BeNullOrEmpty
-            $ModuleManifest.CompanyName | Should -Be "N/A"
+            $ModuleManifest.CompanyName | Should -BeNullOrEmpty
         }
-
         It "Has a valid GUID" {
 
             $ModuleManifest.Guid | Should -Not -BeNullOrEmpty
