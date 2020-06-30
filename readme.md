@@ -8,7 +8,7 @@ As the name suggests, this module is at best a work in progress. Feel free to re
 
 ## Getting Started
 
-As/when it gets published to the Powershell Gallery, you'll be able to install and get started with the commands below.
+You can install it from the Powershell Gallery as below.
 
 ```Powershell
 Install-Module PSGubbins
