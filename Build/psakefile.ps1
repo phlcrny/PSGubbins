@@ -20,6 +20,7 @@ Task default -depends "Test"
 Task "Init" -description "Initialize psake and task variables" -action {
     "Build Environment Details:"
     Get-ChildItem -Path "ENV:\BH*" | Sort-Object -Property "Name"
+    $Settings.JobDivider
 }
 
 Task "Clean" -description "Clean up compiled PSM1, test results etc" -depends "Init" {
@@ -28,6 +29,7 @@ Task "Clean" -description "Clean up compiled PSM1, test results etc" -depends "I
     if ($Null -eq (Get-ChildItem -Path "$($ENV:BHPSModulePath)\*" -File -Exclude "*.psd1"))
     {
         "Clean task completed" | Write-Host -ForegroundColor "Green"
+        $Settings.JobDivider
     }
     else
     {
