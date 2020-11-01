@@ -2,13 +2,11 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/rb52k80b38domdoi/branch/master?svg=true)](https://ci.appveyor.com/project/Phil84148/psgubbins/branch/master)
 
-A Powershell module of assorted gubbins that didn't really fit anywhere else - an SCCM log parser, passphrase generator, ``mstsc.exe`` wrapper.
+A Powershell module of assorted gubbins that didn't really fit anywhere else.
 
-As the name suggests, this module is at best a work in progress. Feel free to report issues or suggest improvements.
+As the name suggests, this is at best a work in progress. Feel free to report issues or suggest improvements.
 
 ## Getting Started
-
-You can install it from the Powershell Gallery as below.
 
 ```Powershell
 Install-Module PSGubbins
@@ -18,7 +16,7 @@ Import-Module PSGubbins
 Get-Command -Module PSGubbbins
 ```
 
-If the Powershell Gallery isn't an option, you can clone or download the source code directly from GitHub, and install manually
+If the Powershell Gallery isn't an option, you can clone or download the source code directly from GitHub, and install manually.
 
 ```Powershell
 # Clone from GitHub
