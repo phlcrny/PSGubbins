@@ -59,24 +59,36 @@ function New-Password
         [int] $MaximumLength = $Null,
 
         [Parameter(Mandatory = $False, HelpMessage = "The first group of words to be used when generating the password - adjectives by default")]
-        [string[]] $FirstDictionary = @("Angry", "Annoying", "Awesome", "Basic", "Bitter", "Clever", "Correct",
-            "Divine", "Enraged", "Fast", "Fat", "Great", "Guilty", "Handy", "Huge", "Intelligent", "Irritated",
-            "Just", "Massive", "Moral", "Morose", "Psyched", "Rapid", "Resourceful", "Righteous", "Sad", "Scary",
-            "Sinful", "Smart", "Strong", "Tiny", "Upright", "Vengeful", "Vexed", "Violent", "Wrathful"),
+        [string[]] $FirstDictionary = @('Adorable', 'Adventurous', 'Aggressive', 'Agreeable', 'Alert', 'Alive', 'Amused', 'Angry', 'Annoyed', 'Annoying', 'Anxious',
+            'Arrogant', 'Ashamed', 'Attractive', 'Average', 'Awesome', 'Awful', 'Bad', 'Basic', 'Beautiful', 'Better', 'Bewildered', 'Bitter', 'Black', 'Bloody',
+            'Blue', 'Blue-eyed', 'Blushing', 'Bored', 'Brainy', 'Brave', 'Breakable', 'Bright', 'Busy', 'Calm', 'Careful', 'Cautious', 'Charming', 'Cheerful',
+            'Clean', 'Clear', 'Clever', 'Cloudy', 'Clumsy', 'Colorful', 'Combative', 'Comfortable', 'Concerned', 'Condemned', 'Confused', 'Cooperative', 'Correct',
+            'Courageous', 'Crazy', 'Creepy', 'Crowded', 'Cruel', 'Curious', 'Cute', 'Dangerous', 'Dark', 'Dead', 'Defeated', 'Defiant', 'Delightful', 'Depressed',
+            'Determined', 'Different', 'Difficult', 'Disgusted', 'Distinct', 'Disturbed', 'Divine', 'Dizzy', 'Doubtful', 'Drab', 'Dull', 'Eager', 'Easy', 'Elated',
+            'Elegant', 'Embarrassed', 'Enchanting', 'Encouraging', 'Energetic', 'Enraged', 'Enthusiastic', 'Envious', 'Evil', 'Excited', 'Expensive', 'Exuberant',
+            'Fair', 'Faithful', 'Famous', 'Fancy', 'Fantastic', 'Fast', 'Fat', 'Fierce', 'Filthy', 'Fine', 'Foolish', 'Fragile', 'Frail', 'Frantic', 'Friendly',
+            'Frightened', 'Funny', 'Gentle', 'Gifted', 'Glamorous', 'Gleaming', 'Glorious', 'Good', 'Gorgeous', 'Graceful', 'Great', 'Grieving', 'Grotesque',
+            'Grumpy', 'Guilty', 'Handsome', 'Handy', 'Happy', 'Healthy', 'Helpful', 'Helpless', 'Hilarious', 'Homeless', 'Homely', 'Horrible', 'Huge', 'Hungry',
+            'Hurt', 'Ill', 'Important', 'Impossible', 'Inexpensive', 'Innocent', 'Inquisitive', 'Intelligent', 'Irritated', 'Itchy', 'Jealous', 'Jittery', 'Jolly',
+            'Joyous', 'Just', 'Kind', 'Lazy', 'Light', 'Lively', 'Lonely', 'Long', 'Lovely', 'Lucky', 'Magnificent', 'Massive', 'Misty', 'Modern', 'Moral', 'Morose',
+            'Motionless', 'Muddy', 'Mushy', 'Mysterious', 'Nasty', 'Naughty', 'Nervous', 'Nice', 'Nutty', 'Obedient', 'Obnoxious', 'Odd', 'Open', 'Outrageous',
+            'Outstanding', 'Panicky', 'Perfect', 'Plain', 'Pleasant', 'Poised', 'Poor', 'Powerful', 'Precious', 'Prickly', 'Proud', 'Psyched', 'Putrid', 'Puzzled',
+            'Quaint', 'Rapid', 'Real', 'Relieved', 'Repulsive', 'Resourceful', 'Rich', 'Righteous', 'Sad', 'Scary', 'Selfish', 'Shiny', 'Shy', 'Silly', 'Sinful',
+            'Sleepy', 'Smart', 'Smiling', 'Smoggy', 'Sore', 'Sparkling', 'Splendid', 'Spotless', 'Stormy', 'Strange', 'Strong', 'Stupid', 'Successful', 'Super',
+            'Talented', 'Tame', 'Tasty', 'Tender', 'Tense', 'Terrible', 'Thankful', 'Thoughtful', 'Thoughtless', 'Tiny', 'Tired', 'Tough', 'Troubled', 'Ugliest',
+            'Ugly', 'Uninterested', 'Unsightly', 'Unusual', 'Upright', 'Upset', 'Uptight', 'Vast', 'Vengeful', 'Vexed', 'Victorious', 'Violent', 'Vivacious',
+            'Wandering', 'Weary', 'Wicked', 'Wild', 'Witty','Worried', 'Worrisome', 'Wrathful', 'Wrong', 'Zany', 'Zealous'),
 
         [Parameter(Mandatory = $False, HelpMessage = "The second group of words to be used when generating the password - animal names by default")]
-        [string[]] $SecondDictionary = @("Alligators", "Apes", "Baboons", "Badgers", "Beavers", "Cats",
-            "Chipmunks", "Coyotes", "Crocodiles", "Dinsoaurs", "Dogs", "Dolphins", "Ducks", "Ferrets", "Fish",
-            "Fleas", "Foxes", "Geese", "Giraffes", "Hares", "Honey Badgers", "Horses", "Leopards", "Lions",
-            "Meerkats", "Mice", "Monkeys", "Rabbits", "Raccoons", "Rats", "Sharks", "Squirrels", "Swans",
-            "Tigers", "Tortoises", "Turtles", "Weasels", "Wolves", "Zebras"),
+        [string[]] $SecondDictionary = @('Alligators', 'Apes', 'Baboons', 'Badgers', 'Beavers', 'Cats', 'Cheetahs', 'Chipmunks', 'Coyotes', 'Crocodiles', 'Crocs',
+            'Dinosaurs', 'Dogs', 'Dolphins', 'Ducks', 'Ferrets', 'Fish', 'Fleas', 'Foxes', 'Gators', 'Geese', 'Giraffes', 'Goats', 'Hares', 'Honey Badgers', 'Horses',
+            'Leopards', 'Lions', 'Meerkats', 'Mice', 'Monkeys', 'Moose', 'Pandas', 'Penguins', 'Rabbits', 'Raccoons', 'Rats', 'Reindeer', 'Sharks', 'Sheep',
+            'Squirrels', 'Swans', 'Tigers', 'Tortoises', 'Turtles', 'Weasels', 'Wolves', 'Zebras'),
 
         [Parameter(Mandatory = $False, HelpMessage = "The third group of words to be used when generating the password - modifiers by default")]
-        [string[]] $ExtraDictionary = @("Abhorrently", "Abnormally", "Absurdly", "Acceptably", "Accordingly",
-            "Adorably", "Amazingly", "Artfully", "Creatively", "Extremely", "Incredibly", "Infinitely", "Mad",
-            "Moderately", "Particularly", "Pleasingly", "Proper", "Really", "Reasonably", "Somewhat",
-            "Strikingly", "Sufficiently", "Super", "Supremely", "Totally", "Tremendously", "Truly", "Very",
-            "Well", "Wicked")
+        [string[]] $ExtraDictionary = @("Abhorrently", "Abnormally", "Absurdly", "Acceptably", "Accordingly", "Adorably", "Amazingly", "Artfully", "Creatively",
+            "Extremely", "Incredibly", "Infinitely", "Mad", "Moderately", "Particularly", "Pleasingly", "Proper", "Really", "Reasonably", "Somewhat", "Strikingly",
+            "Sufficiently", "Super", "Supremely", "Totally", "Tremendously", "Truly", "Very", "Well", "Wicked")
     )
 
     BEGIN

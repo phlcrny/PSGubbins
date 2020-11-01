@@ -7,8 +7,10 @@ and this project (tries to) adhere to [Semantic Versioning](https://semver.org/s
 
 ## [Unreleased]
 
-- ``Update-GitRepo`` - To recursively find and update Git repositories
-- ``Get-CCMLog``- Updates to support retrieval of all logs.
+## [0.4.0] - 01/11/2020
+
+- ``Get-CCMLog`` - removed and spun-off to its own module: [CCMLog](https://github.com/phlcrny/CCMLogs)
+- ``New-Password`` - increased/improved dictionaries
 
 ## [0.3.0] - 04/06/2020
 
