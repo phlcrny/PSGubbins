@@ -4,7 +4,7 @@ on:
   release:
     types: [created]
 jobs:
-  publish-to-gallery:
+  Publish-to-Gallery:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -12,5 +12,6 @@ jobs:
       env:
         PSGalleryToken: ${{ secrets.PSGalleryToken }}
       shell: pwsh
-      run: . ./Build/build.ps1 -Task Deploy -Bootstrap
+      run: |
+        Publish-Module -Path 'PSGubbins' -NuGetApiKey $env:PSGalleryToken -Verbose
 ...

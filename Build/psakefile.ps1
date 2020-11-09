@@ -177,23 +177,3 @@ Task "Test" -description "Runs linter and tests" -depends "Build", "Analyse", "P
     "Test completed" | Write-Host -ForegroundColor "Green"
     $Settings.JobDivider
 }
-
-Task "Deploy" -description "Deploys to the PSGallery" -depends "Test" -action {
-        if ($Null -eq $ENV:PSGalleryToken)
-        {
-            Write-Warning -Message "No deploy token found!"
-        }
-        else
-        {
-            $DeploySplat = @{
-                Path           = $Settings.BuildFolder
-                DeploymentRoot = $Settings.ReleaseFolder
-                Force          = $True
-            }
-
-            Invoke-PSDeploy @DeploySplat
-            "Deployment completed" | Write-Host -ForegroundColor "Green"
-        }
-
-        $Settings.JobDivider
-    }
