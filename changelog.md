@@ -9,6 +9,8 @@ and this project (tries to) adhere to [Semantic Versioning](https://semver.org/s
 
 ## [0.4.0] - 01/11/2020
 
+### Changed
+
 - ``Get-CCMLog`` - removed and spun-off to its own module: [CCMLog](https://github.com/phlcrny/CCMLogs)
 - ``New-Password`` - increased/improved dictionaries
 
