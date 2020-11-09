@@ -12,5 +12,5 @@ jobs:
       env:
         PSGalleryToken: ${{ secrets.PSGalleryToken }}
       shell: pwsh
-      run: . ./Build/build.ps1 -Task Deploy
+      run: . ./Build/build.ps1 -Task Deploy -Bootstrap
 ...
