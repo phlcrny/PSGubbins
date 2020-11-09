@@ -1,7 +1,5 @@
 # PSGubbins
 
-[![Build status](https://ci.appveyor.com/api/projects/status/rb52k80b38domdoi/branch/master?svg=true)](https://ci.appveyor.com/project/Phil84148/psgubbins/branch/master)
-
 A Powershell module of assorted gubbins that didn't really fit anywhere else.
 
 As the name suggests, this is at best a work in progress. Feel free to report issues or suggest improvements.
